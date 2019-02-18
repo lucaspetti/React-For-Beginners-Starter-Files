@@ -15,8 +15,31 @@ class Inventory extends React.Component {
     addFish: PropTypes.func
   };
 
+  state = {
+    uid: null,
+    owner: null
+  };
+
+  componentDidMount() {
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        this.authHandler({ user });
+      }
+    });
+  }
+
   authHandler = async authData => {
-    console.log(authData);
+    const store = await base.fetch(this.props.storeId, { context: this });
+    console.log(store);
+    if (!store.owner) {
+      await base.post(`${this.props.storeId}/owner`, {
+        data: authData.user.uid
+      });
+    }
+    this.setState({
+      uid: authData.user.uid,
+      owner: store.owner || authData.user.uid
+    })
   }
 
   authenticate = provider => {
@@ -27,11 +50,29 @@ class Inventory extends React.Component {
       .then(this.authHandler);
   };
 
+  logout = async () => {
+    console.log('Logging out!');
+    await firebase.auth().signOut();
+    this.setState({ uid: null });
+  }
+
   render() {
-    return (<Login authenticate={this.authenticate} />)
+    const logout = <button onClick={this.logout}>Logout</button>
+
+    if (!this.state.uid) {
+      return (<Login authenticate={this.authenticate} />)
+    }
+    if (this.state.uid !== this.state.owner) {
+      return (
+        <div>
+          <p>Sorry you are not the owner!</p>
+          {logout}
+        </div> )
+    }
     return (
       <div className="inventory">
         <h2>Inventory</h2>
+        {logout}
         {Object.keys(this.props.fishes).map(key => (
           <EditFishForm
             key={key}
