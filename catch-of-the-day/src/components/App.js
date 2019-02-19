@@ -40,7 +40,6 @@ class App extends React.Component {
     base.removeBinding(this.ref);
   }
 
-
   addFish = fish => {
     const fishes = { ...this.state.fishes };
     fishes[`fish${Date.now()}`] = fish;
@@ -53,13 +52,13 @@ class App extends React.Component {
     const fishes = { ...this.state.fishes };
     fishes[key] = updatedFish;
     this.setState({ fishes });
-  }
+  };
 
   deleteFish = (key) => {
     const fishes = { ...this.state.fishes };
     fishes[key] = null;
     this.setState({ fishes });
-  }
+  };
 
   loadSampleFishes = () => {
     this.setState({ fishes: sampleFishes });
@@ -69,13 +68,13 @@ class App extends React.Component {
     const order = { ...this.state.order };
     order[key] = order[key] + 1 || 1;
     this.setState({ order });
-  }
+  };
 
   removeFromOrder = key  => {
     const order = { ...this.state.order };
     delete order[key];
     this.setState({ order });
-  }
+  };
 
   render() {
     return (
