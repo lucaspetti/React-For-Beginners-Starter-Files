@@ -6,6 +6,7 @@ Starter files for the React For Beginners course. Come <a href="https://ReactFor
 
 The code in this repo meant to be a reference point for anyone following along with the video course.
 
+
 ## To Start
 
 **Note** - one of the dependencies is currently not working with Node.js 10.3, please use [version 9.11.1](https://nodejs.org/download/release/v9.11.1/) (or around that, 8.x and 9.x should work fine) until then.
